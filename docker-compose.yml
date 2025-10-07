@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # Serviço do Backend (.NET API)
+  api:
+    build:
+      context: . # O contexto é a pasta atual (Teste)
+      dockerfile: Dockerfile # O nome do Dockerfile na raiz
+    ports:
+      # Mapeia a porta 5001 da sua máquina para a porta 8080 do contêiner
+      - "5255:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      # Cria um volume persistente para o banco de dados SQLite
+      - dbdata:/app
+
+  # Serviço do Frontend (React App)
+  client:
+    build:
+      context: ./frontend # O contexto é a subpasta 'frontend'
+      dockerfile: Dockerfile # O nome do Dockerfile dentro de 'frontend'
+    ports:
+      # Mapeia a porta 3000 da sua máquina para a porta 80 do contêiner
+      - "3000:80"
+    environment:
+      # Define a variável de ambiente que o nosso frontend vai usar
+      - VITE_API_URL=http://api:8080/api
+    depends_on:
+      # Diz ao Docker para esperar o serviço 'api' estar pronto antes de iniciar o 'client'
+      - api
+
+volumes:
+  # Define o volume que será usado para persistir os dados do banco
+  dbdata:

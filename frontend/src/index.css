@@ -1,0 +1,9 @@
+/* (Mantenha qualquer estilo que você já tenha, se houver) */
+
+li {
+  display: flex;
+  justify-content: space-between; /* Coloca espaço entre os itens */
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+}
